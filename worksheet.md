@@ -69,3 +69,58 @@ Is there a place that you could put all the common parts?
 # Task 10
 
 Draw a picture of the inheritance hierarchy you have created.  You should (loosely) use [UML notation](http://www.csci.csusb.edu/dick/cs201/uml.html) for your diagram.  You are using UML In this case, and all through this course, only for "a rough sketch of an idea".
+
+# Task 11
+
+Start this task from the solution to Task 10.  The abstract `Character` class we were left with had to pick a default colour.  This was an entirely arbitrary choice.  Whenever you see arbitrary default values, you are seeing bad code.  But don't worry, Java 8 has us covered.  Java 8 introduced `Optional` values so that instead of arbitrary choices (or worse - `null`!) you can have an empty value.  [Read up on `Optional` values (just read until "Default Values and Actions")](http://www.oracle.com/technetwork/articles/java/java8-optional-2175753.html) and then change the `display` colour in the `Character` class to be an `Optional<Color>` instead of a `Color`.  You will need to make changes in the subclasses as well to support this.
+
+🤔 Does the `Character` class even _need_ to be abstract?  Why or why not?
+
+Your company builds a lot of games like this one and you now have to incorporate your work with the company's game processing code.  We have included a jar of this code in the `\lib` directory and javadoc explaining that code in the `\doc` directory.  In there you will see a `GameBoard` interface that represents things that a game might be played on, like a Chess board or the grid you have created.  You will also see an `GamePiece` interface that represents things that can move around such a game board, like a Chess piece or one of your characters.
+
+## Task 12 - Step One
+
+Have `Grid` implement `GameBoard` and have `Character` implement `GamePiece`.
+
+## Task 12 - Step Two
+
+With that done, you are now able to make use of the `RelativeMove`s provided by the library.  You should add functionality to play a set list of moves automatically.  I.e. when the game starts, it will play some hard-coded moves.  To do this you will need a list of moves to play, something like
+
+~~~~~
+private java.util.List<bos.RelativeMove> moves;
+~~~~~
+
+in your `Stage` class.
+
+You will also need to have the `paint` method (that runs over and over again) make a move whenever a certain amount of time is up (say 2 seconds).
+
+Note, we are now doing some processing between painting so we should move from the
+
+~~~~~
+loop forever {
+  paint
+}
+~~~~~
+
+paint loop to an update-and-paint loop like
+
+~~~~~
+loop forever {
+  update game state
+  paint
+}
+~~~~~
+
+Something like the following `update` method in `Stage` (assuming you have a `timeOfLastMove` field in `Stage`) will work.
+
+~~~~~
+    public void update() {
+        if (moves.size() > 0 && timeOfLastMove.plus(Duration.ofSeconds(2)).isBefore(Instant.now())){
+            timeOfLastMove = Instant.now();
+            moves.remove(0).perform();
+        } else if (moves.size() == 0  && timeOfLastMove.plus(Duration.ofSeconds(20)).isBefore(Instant.now())) {
+            System.exit(0);
+        }
+~~~~~
+
+Fill your `moves` object with example moves and see if you can get your program to automatically play the moves you entered.
