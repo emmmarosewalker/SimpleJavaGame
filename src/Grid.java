@@ -2,7 +2,7 @@ import java.awt.*;
 
 public class Grid {
 
-    private Cell[][] cells  = new Cell[20][20];;
+    private Cell[][] cells  = new Cell[20][20];
 
     private int x;
     private int y;
@@ -25,4 +25,10 @@ public class Grid {
                 thisCell.paint(g, thisCell.contains(mousePosition));
             }
         }
-    }}
+    }
+
+    public Cell getRandomCell(){
+        java.util.Random rand = new java.util.Random();
+        return cells[rand.nextInt(20)][rand.nextInt(20)];
+    }
+}

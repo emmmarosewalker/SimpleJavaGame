@@ -6,17 +6,17 @@ public class Main extends JFrame implements Runnable {
 
     private class Canvas extends JPanel {
 
-        private Grid grid;
+        private Stage stage;
 
         public Canvas() {
             setPreferredSize(new Dimension(1280, 720));
 
-            grid = new Grid(10, 10);
+            stage = new Stage();
         }
 
         @Override
         public void paint(Graphics g) {
-            grid.paint(g, getMousePosition());
+            stage.paint(g, getMousePosition());
         }
     }
 
