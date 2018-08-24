@@ -124,3 +124,59 @@ Something like the following `update` method in `Stage` (assuming you have a `ti
 ~~~~~
 
 Fill your `moves` object with example moves and see if you can get your program to automatically play the moves you entered.
+
+# Task 13
+
+Currently, the game loop (in `Main.run`) is running as fast as it can.  We fixed the rate of movement at 2-second intervals, but the frame is still painted as quickly as possible.  This just burns CPU cycles and heats up your computer needlessly.  Your task is to "fix" the frame-rate so we are not pointlessly burning CPU power. You can do this by asking the current thread to sleep for a period of time using `Thread.sleep`. We want the frame-rate to be about 50 frames per second, that means we need the loop to take 20ms to complete.
+
+Sleeping a thread throws an `InterruptedException` so you will need to catch that. In fact, we don't care about the thread being interrupted so the catch block should just report the fact it was interrupted, print out a representation (via `toString`) of the exception that was thrown, and continue on as normal.
+
+# Task 14
+
+Our task now is to add the ability to read in configuration data from a file.  Someone else at the company (person A) has tried and come up with the following.
+
+A file is kept in a "data" folder called "name.saw". That file has one line for each configuration item.  We begin with just the character locations (given as row and column).
+
+~~~~~
+sheep: (2,0)
+wolf: (3,5)
+shepherd: (3,6)
+~~~~~
+
+Person A tried to write code to read this file
+
+~~~~~
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class SAWReader {
+    List<String> contents;
+
+    public SAWReader(String filename) {
+      contents = java.nio.file.Files.readAllLines(java.nio.file.Paths.get(filename));
+    }
+
+    public bos.Pair<Integer, Integer> getSheepLoc(){
+        for (String s: contents){
+            Pattern p = Pattern.compile("sheep:\\s*\\((\\d*),\\s*(\\d)\\)");
+            Matcher m = p.matcher(s);
+            if(m.matches()){
+                return new bos.Pair( Integer.parseInt(m.group(1).trim())
+                                   , Integer.parseInt(m.group(2).trim()));
+            }
+        }
+        return new bos.Pair(0,0);
+    }
+}
+
+~~~~~
+but is getting the following error
+
+~~~~~
+Error:(11, 56) java: unreported exception java.io.IOException; must be caught or declared to be thrown
+~~~~~
+
+Can you help them out?  What are they doing wrong?  What is the right solution?  Once you have done that, write the `getWolfLoc` and `getShepherdLoc` methods and see if you can incorporate this code into your game to load the character starting positions from a file.
+
+🤔 There is some interesting code in here, what is a `Pattern` and how is it helping with reading the file?
