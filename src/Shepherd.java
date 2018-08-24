@@ -4,7 +4,7 @@ public class Shepherd extends Character {
 
     public Shepherd(Cell location) {
         super(location);
-        display = Color.GREEN;
+        display = java.util.Optional.of(Color.GREEN);
     }
 
 }

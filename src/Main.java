@@ -16,6 +16,7 @@ public class Main extends JFrame implements Runnable {
 
         @Override
         public void paint(Graphics g) {
+            stage.update();
             stage.paint(g, getMousePosition());
         }
     }

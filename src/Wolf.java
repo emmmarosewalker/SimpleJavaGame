@@ -4,7 +4,7 @@ public class Wolf extends Character {
 
     public Wolf(Cell location) {
         super(location);
-        display = Color.RED;
+        display = java.util.Optional.of(Color.RED);
     }
 
 }
