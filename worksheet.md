@@ -180,3 +180,70 @@ Error:(11, 56) java: unreported exception java.io.IOException; must be caught or
 Can you help them out?  What are they doing wrong?  What is the right solution?  Once you have done that, write the `getWolfLoc` and `getShepherdLoc` methods and see if you can incorporate this code into your game to load the character starting positions from a file.
 
 🤔 There is some interesting code in here, what is a `Pattern` and how is it helping with reading the file?
+
+# Task 15
+
+Add the following method to the `Grid` class
+
+~~~~~
+    /**
+     * Takes a cell consumer (i.e. a function that has a single `Cell` argument and
+     * returns `void`) and applies that consumer to each cell in the grid.
+     * @param func The `Cell` to `void` function to apply at each spot.
+     */
+    public void doToEachCell(Consumer<Cell> func){
+      // Your job to add the body
+    }
+~~~~~
+
+ Notice that the method accepts a `Consumer` functional interface.
+
+ Now use this method to turn the `paint` method of the `Grid` class into a single line of code.  I.e. remove the double-nested loop and replace it with a call to `doToEachCell`.
+
+# Task 16
+
+Add two more methods to the `Grid` class
+
+~~~~~
+    /** Takes a cell predicate (i.e. a function that has a single `Cell` argument and
+     * returns a `boolean` result) and applies that predicate to each cell, returning
+     * the first cell it finds for which the predicate is true.
+     * @param predicate The `Cell` to `boolean` function to test with
+     * @return The first cell (searching row by row, left to right) that is true for the predicate.  Returns `null` if no such cell found.
+     */
+    public Pair<Integer, Integer> findAmongstCells(Predicate<Cell> predicate){
+        // Your job to fill in the body
+    }
+
+    /** Takes a cell predicate (i.e. a function that has a single `Cell` argument and
+     * returns a `result` and applies that predicate to each cell, returning
+     * the first cell it finds for which the predicate is true.  Returns an optional that is full
+     * if such a cell is found and an empty optional if there is no such cell.
+     * @param predicate The `Cell` to `boolean` function to test with
+     * @return The first cell (searching row by row, left to right) that is true for the predicate.  Returns an empty optional if no cell found.
+     */
+    public Optional<Pair<Integer, Integer>> safeFindAmongstCells(Predicate<Cell> predicate){
+        // Your job to fill in the body
+
+    }
+~~~~~
+
+Notice that these two accept an argument that is a `Predicate` functional interface, a function that takes something and returns `true` or `false`.  It should be fairly clear how to use `findAmongstCells` in your methods implementing `GameBoard`.  Make that change.
+
+🤔 What would you think if I told you that you can use `safeFindAmongstCell` to turn each of those methods into a single statement?
+
+Here is the solution for `below`:
+
+~~~~~
+    @Override
+    public Optional<Cell> below(Cell relativeTo) {
+        return safeFindAmongstCells((c) -> c == relativeTo).filter((p) -> p.first < 19              )
+                                                           .map   ((p) -> cells[p.first+1][p.second]);
+    }
+~~~~~
+
+Look up the `filter` and `map` methods of the `Optional` class and explain how this implementation of `below` works.
+
+Modify the three similar methods (`above`, `leftOf`, and `rightOf`) to all use the same approach.
+
+Do you like these versions better?  Why or why not?
