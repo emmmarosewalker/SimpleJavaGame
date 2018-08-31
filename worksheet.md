@@ -131,7 +131,7 @@ Currently, the game loop (in `Main.run`) is running as fast as it can.  We fixed
 
 Sleeping a thread throws an `InterruptedException` so you will need to catch that. In fact, we don't care about the thread being interrupted so the catch block should just report the fact it was interrupted, print out a representation (via `toString`) of the exception that was thrown, and continue on as normal.
 
-# Task 14
+# Task 13a
 
 Our task now is to add the ability to read in configuration data from a file.  Someone else at the company (person A) has tried and come up with the following.
 
@@ -181,7 +181,7 @@ Can you help them out?  What are they doing wrong?  What is the right solution? 
 
 🤔 There is some interesting code in here, what is a `Pattern` and how is it helping with reading the file?
 
-# Task 15
+# Task 14
 
 Add the following method to the `Grid` class
 
@@ -200,7 +200,7 @@ Add the following method to the `Grid` class
 
  Now use this method to turn the `paint` method of the `Grid` class into a single line of code.  I.e. remove the double-nested loop and replace it with a call to `doToEachCell`.
 
-# Task 16
+# Task 15
 
 Add two more methods to the `Grid` class
 
