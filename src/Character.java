@@ -1,7 +1,10 @@
 import java.awt.*;
+import java.util.Map;
 import java.util.Optional;
+import java.util.List;
 
 import bos.GamePiece;
+import bos.RelativeMove;
 import java.awt.*;
 import java.util.Optional;
 
@@ -28,4 +31,6 @@ public abstract class Character implements GamePiece<Cell> {
     public Cell getLocationOf(){
         return this.location;
     }
+
+    public abstract RelativeMove aiMove(Stage stage);
 }

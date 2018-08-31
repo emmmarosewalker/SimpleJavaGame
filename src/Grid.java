@@ -1,7 +1,8 @@
-import bos.GameBoard;
-import bos.Pair;
+import bos.*;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -104,4 +105,35 @@ public class Grid implements GameBoard<Cell> {
     public Cell cellAtRowCol(Integer row, Integer col) {
         return cells[row][col];
     }
-}
+
+
+    @Override
+    public java.util.List<RelativeMove> movesBetween(Cell from, Cell to, GamePiece<Cell> mover) {
+        Pair<Integer, Integer> fromIndex = findAmongstCells((c) -> c == from);
+        Pair<Integer, Integer> toIndex = findAmongstCells((c) -> c == to);
+
+        List<RelativeMove> result = new ArrayList<RelativeMove>();
+
+        // horizontal movement
+        if (fromIndex.second <= toIndex.second) {
+            for (int i = fromIndex.second; i < toIndex.second; i++) {
+                result.add(new MoveRight(this, mover));
+            }
+        } else {
+            for (int i = toIndex.second; i < fromIndex.second; i++) {
+                result.add(new MoveLeft(this, mover));
+            }
+        }
+
+        // vertical movement
+        if (fromIndex.first <= toIndex.first) {
+            for (int i = fromIndex.first; i < toIndex.first; i++) {
+                result.add(new MoveDown(this, mover));
+            }
+        } else {
+            for (int i = toIndex.first; i < fromIndex.first; i++) {
+                result.add(new MoveUp(this, mover));
+            }
+        }
+        return result;
+    }}

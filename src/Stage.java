@@ -1,42 +1,42 @@
 import java.awt.*;
 import java.util.*;
 import java.time.*;
+import java.util.List;
+
 import bos.RelativeMove;
 
 public class Stage {
-    private Grid grid;
-    private Character sheep;
-    private Character shepherd;
-    private Character wolf;
+    protected Grid grid;
+    protected Character sheep;
+    protected Character shepherd;
+    protected Character wolf;
+    private List<Character> allCharacters;
 
     private Instant timeOfLastMove = Instant.now();
-    private java.util.List<RelativeMove> moves;
 
     public Stage() {
-        SAWReader sr = new SAWReader("data/stage1.saw");
         grid     = new Grid(10, 10);
+        sheep    = new Sheep(grid.getRandomCell());
+        shepherd = new Shepherd(grid.getRandomCell());
+        wolf     = new Wolf(grid.getRandomCell());
 
-        sheep    = new Sheep(grid.cellAtRowCol(sr.getSheepLoc().first,
-                                               sr.getSheepLoc().second));
-        shepherd = new Shepherd(grid.cellAtRowCol(sr.getShepherdLoc().first,
-                                                  sr.getShepherdLoc().second));
-        wolf     = new Wolf(grid.cellAtRowCol(sr.getWolfLoc().first,
-                                              sr.getWolfLoc().second));
-
-        moves    = new ArrayList<RelativeMove>();
-        moves.add(new bos.MoveDown(grid, sheep));
-        moves.add(new bos.MoveDown(grid, sheep));
-        moves.add(new bos.MoveUp(grid, wolf));
-        moves.add(new bos.MoveUp(grid, shepherd));
+        allCharacters = new ArrayList<Character>();
+        allCharacters.add(sheep); allCharacters.add(shepherd); allCharacters.add(wolf);
 
     }
 
     public void update(){
-        if (moves.size() > 0 && timeOfLastMove.plus(Duration.ofSeconds(2)).isBefore(Instant.now())){
-            timeOfLastMove = Instant.now();
-            moves.remove(0).perform();
-        } else if (moves.size() == 0  && timeOfLastMove.plus(Duration.ofSeconds(20)).isBefore(Instant.now())) {
-            System.exit(0);
+        if (timeOfLastMove.plus(Duration.ofSeconds(1)).isBefore(Instant.now())) {
+            if (sheep.location == shepherd.location) {
+                System.out.println("The sheep is safe :)");
+                System.exit(0);
+            } else if (sheep.location == wolf.location){
+                System.out.println("The sheep is dead :(");
+                System.exit(1);
+            } else {
+                allCharacters.forEach((c) -> c.aiMove(this).perform());
+                timeOfLastMove = Instant.now();
+            }
         }
     }
 
