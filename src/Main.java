@@ -1,6 +1,8 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.*;
+import java.time.Duration;
+import java.time.Instant;
 
 public class Main extends JFrame implements Runnable {
 
@@ -36,7 +38,15 @@ public class Main extends JFrame implements Runnable {
     @Override
     public void run() {
         while (true) {
+            Instant startTime = Instant.now();
             this.repaint();
+            Instant endTime = Instant.now();
+            try {
+                Thread.sleep(20 - Duration.between(startTime, endTime).toMillis());
+            } catch (InterruptedException e) {
+                System.out.println("thread was interrupted, but really, who cares?");
+                System.out.println(e.toString());
+            }
         }
     }
 

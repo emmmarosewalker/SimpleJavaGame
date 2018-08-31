@@ -13,10 +13,15 @@ public class Stage {
     private java.util.List<RelativeMove> moves;
 
     public Stage() {
+        SAWReader sr = new SAWReader("data/stage1.saw");
         grid     = new Grid(10, 10);
-        sheep    = new Sheep(grid.getRandomCell());
-        shepherd = new Shepherd(grid.getRandomCell());
-        wolf     = new Wolf(grid.getRandomCell());
+
+        sheep    = new Sheep(grid.cellAtRowCol(sr.getSheepLoc().first,
+                                               sr.getSheepLoc().second));
+        shepherd = new Shepherd(grid.cellAtRowCol(sr.getShepherdLoc().first,
+                                                  sr.getShepherdLoc().second));
+        wolf     = new Wolf(grid.cellAtRowCol(sr.getWolfLoc().first,
+                                              sr.getWolfLoc().second));
 
         moves    = new ArrayList<RelativeMove>();
         moves.add(new bos.MoveDown(grid, sheep));
