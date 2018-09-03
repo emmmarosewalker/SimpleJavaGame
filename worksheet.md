@@ -278,3 +278,55 @@ So, time to throw a spanner in the works.  It has been decided that any time a s
 
 You can have quite a bit of fun with interesting behaviour changes now and the `movesBetween` method is powerful enough to support a number of different movement strategies.
 
+## 🤔 Task 17a
+
+This task sits to the side of our other tasks.  It is an experiment.  Even after we get an answer, we won't build upon that answer in later tasks, i.e. we will use the Task 17 answer as the basis for Task 18.  However, I think this is the most interesting task so far, it is certainly worth your time.
+
+Can we make the strategy pattern we just created disappear with lambda expressions?  More concretely, can I get rid of the `Behaviour` interface and its subclasses and still have dynamic behaviour at run-time?  If so, implement it and discuss the pros and cons of this approach compared to a "real" strategy pattern.
+
+# Task 18
+
+## Task 18a (getting ready for observer)
+
+We are now going to introduce a human controlled player.  This player does not influence the characters (yet) but can move around the board using the "wsad" keys of the keyboard.  This introduces a problem for our model.  We were able to get the mouse input because it is a _continuous_ variable.  I.e. it always has some value, so whenever we ask for it, we will certainly get an answer.  Key presses are momentary and thus we may not be able to ask at the time they are pressed.  We need to move to an event model to deal with this.  Java has an event model built in but it comes with a great deal of baggage and we are doing everything ourselves.  Thus we will engage with the Java event model only in the `Main.java` file and create our own event system for the rest of the application.
+
+Another name for an event system is a "publish-subscribe" system and thus we will be using the observer pattern to implement it.
+
+To hook into Java's event system we need to make the `Canvas` class implement the `java.awt.event.KeyListener` interface.  This will require implementations of three methods.  At this stage just leave them all empty.  Eventually the `keyTyped` method will call something in the `Stage` class to pass on the event.
+
+~~~~~
+@Override
+public void keyTyped(KeyEvent e) {}
+
+@Override
+public void keyPressed(KeyEvent e) {}
+
+@Override
+public void keyReleased(KeyEvent e) {}
+~~~~~
+
+
+The last step to hooking into Java's event handling is to register the `Canvas` as the key listener.  This can be done in the `main` method with `this.addKeyListener(canvas)`.  I have included an example `Main.java` under the `src` directory of this repository to guide you.
+
+Now lets add a "player".  The player does not make AI moves.  When it is the player's turn to move the program will wait for input from the human player (a key-press) indicating what move to make.  We need a new `Player` class with methods:
+  * a constructor that takes the location (cell) of the character
+  * a `paint` method that draws an orange circle for the player
+  * an `inMove` method that returns `true` isf we are waiting for the human player to make their move
+  * a `startMove` method that puts the player object into the state of waiting for the human to make their move.
+
+That's all the scaffolding we need, now to apply the observer pattern to the task of notifying the player when a key is pressed.
+
+## Task 18b
+
+The built-in `Observer` and `Observable` classes in Java _are not appropriate for our purposes_  because they insist on dealing only with `Objects`.  There are not generic versions of them we might use like we use generic containers.  (🤔 Any idea why?).  Instead we will make a specific observer pattern.  We need an interface taking the role of the "observer" and an interface or class for the "subject".  Within the observer we need an "update" method (see the readings to find out what these terms all mean) specifically for being told when a key is pressed.
+
+Your job is to design and implement an observer pattern that will fit into this application for this purpose.  When you are done, the stage will be notifying the player (via an observer pattern) that a key has been pressed and the player will use that information to make its move (if it is ready for a move).  Some tips:
+  * Your "update" method will need to be given at least the character that was pressed but probably also the `GameBoard` since you need access to that to make your move.
+  * A `Stage` will be  your concrete subject.
+  * The `Player` will be your concrete observer.
+
+## 🤔 Task 19
+
+This task sits to the side of the other tasks.  Task 20 will build from the solution to Task 18, not this task.
+
+Can you make the "make the observer pattern disappear" with lambdas while still maintaining the _intention_ of the pattern?
