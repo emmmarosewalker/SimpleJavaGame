@@ -11,10 +11,12 @@ import java.util.Optional;
 public abstract class Character implements GamePiece<Cell> {
     Optional<Color> display;
     Cell location;
+    Behaviour behaviour;
 
-    public Character(Cell location){
+    public Character(Cell location, Behaviour behaviour){
         this.location = location;
         this.display = Optional.empty();
+        this.behaviour = behaviour;
     }
 
     public  void paint(Graphics g){
@@ -32,5 +34,13 @@ public abstract class Character implements GamePiece<Cell> {
         return this.location;
     }
 
-    public abstract RelativeMove aiMove(Stage stage);
+    public void setBehaviour(Behaviour behaviour){
+        this.behaviour = behaviour;
+    }
+
+    public RelativeMove aiMove(Stage stage){
+        return behaviour.chooseMove(stage, this);
+    }
+
+
 }
