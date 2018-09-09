@@ -330,3 +330,11 @@ Your job is to design and implement an observer pattern that will fit into this 
 This task sits to the side of the other tasks.  Task 20 will build from the solution to Task 18, not this task.
 
 Can you make the "make the observer pattern disappear" with lambdas while still maintaining the _intention_ of the pattern?
+
+## Task 20
+
+We are going to do a _design_ for adding Bees to the game.  A bee is a character that flies randomly around the game board unless it is in the vicinity of another bee.  If it is just one cell away, it will join that other bee and become a swarm of bees.  Swarms of bees also move around the same way, when they are next to another swarm they will join together to become an even bigger swarm (individual bees also join swarms when next to them).  Bees can sting the other characters and the player if they are on the same spot - get stung 3 times (or once by a swarm bigger than 2 bees) and you are out of the game.
+
+The obvious design pattern for Bees is the composite pattern.  Do a design (using UML-ish notation) of how you might apply the composite pattern to this problem.
+
+What other changes are required in the program?  How does the composite pattern fit into the current design?  Can you think of a better alternative than using the composite pattern for this problem?
