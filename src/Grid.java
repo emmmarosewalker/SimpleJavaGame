@@ -14,6 +14,9 @@ public class Grid implements GameBoard<Cell> {
     private int x;
     private int y;
 
+    private Point lastSeenMousePos;
+    private long stillMouseTime;
+
     public Grid(int x, int y) {
         this.x = x;
         this.y = y;
@@ -26,7 +29,25 @@ public class Grid implements GameBoard<Cell> {
     }
 
     public void paint(Graphics g, Point mousePosition) {
-        doToEachCell((c) -> c.paint(g, c.contains(mousePosition)));
+        if (lastSeenMousePos != null && lastSeenMousePos.equals(mousePosition)) {
+            stillMouseTime++;
+        } else {
+            stillMouseTime = 0;
+        }
+        doToEachCell((c) -> {
+            c.paint(g, c.contains(mousePosition));
+        });
+        doToEachCell((c) -> {
+            if (c.contains(mousePosition)){
+                if (stillMouseTime > 20){
+                    g.setColor(Color.YELLOW);
+                    g.fillRoundRect(mousePosition.x + 20, mousePosition.y + 20, 50, 15, 3, 3);
+                    g.setColor(Color.BLACK);
+                    g.drawString("grass: "+ c.getGrassHeight(), mousePosition.x + 20, mousePosition.y + 32);
+                }
+            }
+        });
+        lastSeenMousePos = mousePosition;
     }
 
     public Cell getRandomCell() {
