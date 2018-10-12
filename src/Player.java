@@ -25,6 +25,10 @@ public class Player implements KeyObserver {
         return inMove;
     }
 
+    public Cell getLocationOf() {
+        return this.location;
+    }
+
     public void notify(char c, GameBoard<Cell> gb) {
         if (inMove){
             if (c == 'a') {
@@ -42,5 +46,9 @@ public class Player implements KeyObserver {
             }
 
         }
+    }
+
+    public void setLocationOf(Cell location) {
+        this.location = location;
     }
 }

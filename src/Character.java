@@ -39,8 +39,7 @@ public abstract class Character implements GamePiece<Cell> {
     }
 
     public RelativeMove aiMove(Stage stage){
-        return behaviour.chooseMove(stage, this);
+        return behaviour.chooseMove(stage, this).get(0);
     }
-
 
 }

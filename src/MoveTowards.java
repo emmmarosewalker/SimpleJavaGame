@@ -1,6 +1,7 @@
 import bos.NoMove;
 import bos.RelativeMove;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MoveTowards implements Behaviour {
@@ -10,11 +11,19 @@ public class MoveTowards implements Behaviour {
         this.target = character;
     }
 
+
     @Override
-    public RelativeMove chooseMove(Stage stage, Character mover) {
-        List<RelativeMove> movesToTarget = stage.grid.movesBetween(mover.location,target.location, mover);
-        if (movesToTarget.size() == 0)
-            return new NoMove(stage.grid, mover);
-        else
-            return movesToTarget.get(0);    }
+    public ArrayList<RelativeMove> chooseMove(Stage stage, Character mover) {
+        ArrayList<RelativeMove> movesToTarget = new ArrayList<>();
+        movesToTarget.addAll(stage.grid.movesBetween(mover.location,target.location, mover));
+
+        if (movesToTarget.size() == 0) {
+            //movesToTarget = new ArrayList<>();
+            movesToTarget.add(new NoMove(stage.grid, mover));
+        }
+        return movesToTarget;
+    }
+
+
+
 }

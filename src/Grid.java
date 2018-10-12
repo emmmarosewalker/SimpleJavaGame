@@ -21,9 +21,18 @@ public class Grid implements GameBoard<Cell> {
         this.x = x;
         this.y = y;
 
+        SAWReader sr = new SAWReader("data/stage1.saw");
+
+        ArrayList<bos.Pair<Integer, Integer>> blocks = sr.getBlockLocs();
+
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
                 cells[i][j] = new Cell(x + j * 35, y + i * 35);
+                for (bos.Pair<Integer, Integer> block : blocks) {
+                    if (block.first == i && block.second == j) {
+                        cells[i][j] = new Block(x + j * 35, y + i * 35);
+                    }
+                }
             }
         }
     }
@@ -55,7 +64,7 @@ public class Grid implements GameBoard<Cell> {
         return cells[rand.nextInt(20)][rand.nextInt(20)];
     }
 
-    private bos.Pair<Integer, Integer> indexOfCell(Cell c) {
+    public bos.Pair<Integer, Integer> indexOfCell(Cell c) {
         for (int y = 0; y < 20; ++y) {
             for (int x = 0; x < 20; ++x) {
                 if (cells[y][x] == c) {

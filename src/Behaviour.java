@@ -1,5 +1,7 @@
 import bos.RelativeMove;
 
+import java.util.ArrayList;
+
 public interface Behaviour {
-    public RelativeMove chooseMove(Stage stage, Character mover);
+    public ArrayList<RelativeMove> chooseMove(Stage stage, Character mover);
 }

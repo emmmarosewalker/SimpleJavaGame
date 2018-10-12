@@ -6,9 +6,12 @@ public class Cell extends Rectangle {
     private static Random rand = new Random();
     Color c;
 
+    protected Boolean isBlock;
+
     public Cell(int x, int y) {
         super(x, y, 35, 35);
         c = new Color(rand.nextInt(30), rand.nextInt(155)+100, rand.nextInt(30));
+        isBlock = false;
     }
 
     public void paint(Graphics g, Boolean highlighted) {
@@ -22,6 +25,10 @@ public class Cell extends Rectangle {
                 g.drawRoundRect(x+1, y+1, 33, 33, i, i);
             }
         }
+    }
+
+    public Boolean checkIfBlock() {
+        return isBlock;
     }
 
     @Override
