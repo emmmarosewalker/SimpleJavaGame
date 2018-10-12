@@ -15,7 +15,7 @@ public class MoveTowards implements Behaviour {
     @Override
     public ArrayList<RelativeMove> chooseMove(Stage stage, Character mover) {
         ArrayList<RelativeMove> movesToTarget = new ArrayList<>();
-        movesToTarget.addAll(stage.grid.movesBetween(mover.location,target.location, mover));
+        movesToTarget.addAll(stage.grid.movesBetween(mover.location, target.location, mover));
 
         if (movesToTarget.size() == 0) {
             //movesToTarget = new ArrayList<>();
@@ -23,7 +23,6 @@ public class MoveTowards implements Behaviour {
         }
         return movesToTarget;
     }
-
 
 
 }
