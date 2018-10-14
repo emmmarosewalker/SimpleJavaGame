@@ -37,6 +37,10 @@ public class Grid implements GameBoard<Cell> {
         }
     }
 
+    public Cell[][] getCells() {
+        return cells;
+    }
+
     public void paint(Graphics g, Point mousePosition) {
         if (lastSeenMousePos != null && lastSeenMousePos.equals(mousePosition)) {
             stillMouseTime++;
@@ -49,6 +53,12 @@ public class Grid implements GameBoard<Cell> {
         doToEachCell((c) -> {
             if (c.contains(mousePosition)){
                 if (stillMouseTime > 20){
+                    if (c.getPath() != null) {
+                        for (Cell p : c.getPath()) {
+                            g.setColor(Color.MAGENTA);
+                            p.paint(g, true);
+                        }
+                    }
                     g.setColor(Color.YELLOW);
                     g.fillRoundRect(mousePosition.x + 20, mousePosition.y + 20, 50, 15, 3, 3);
                     g.setColor(Color.BLACK);
@@ -145,25 +155,41 @@ public class Grid implements GameBoard<Cell> {
         List<RelativeMove> result = new ArrayList<RelativeMove>();
 
         // horizontal movement
-        if (fromIndex.second <= toIndex.second) {
-            for (int i = fromIndex.second; i < toIndex.second; i++) {
-                result.add(new MoveRight(this, mover));
-            }
-        } else {
-            for (int i = toIndex.second; i < fromIndex.second; i++) {
+//        if (fromIndex.second <= toIndex.second) {
+//            for (int i = fromIndex.second; i < toIndex.second; i++) {
+//                result.add(new MoveRight(this, mover));
+//            }
+//        } else {
+//            for (int i = toIndex.second; i < fromIndex.second; i++) {
+//                result.add(new MoveLeft(this, mover));
+//            }
+//        }
+//
+//        // vertical movement
+//        if (fromIndex.first <= toIndex.first) {
+//            for (int i = fromIndex.first; i < toIndex.first; i++) {
+//                result.add(new MoveDown(this, mover));
+//            }
+//        } else {
+//            for (int i = toIndex.first; i < fromIndex.first; i++) {
+//                result.add(new MoveUp(this, mover));
+//            }
+//        }
+
+        AStarPath aStarPath = new AStarPath(this, mover);
+        ArrayList<Cell> cellPath = aStarPath.findPath(from, to, mover);
+
+        for (int i = 1; i < cellPath.size(); i++) {
+            if (cellPath.get(i).x < cellPath.get(i-1).x) {
                 result.add(new MoveLeft(this, mover));
+            } else if (cellPath.get(i).x > cellPath.get(i-1).x) {
+                result.add(new MoveRight(this, mover));
+            } else if (cellPath.get(i).y < cellPath.get(i - 1).y) {
+                result.add(new MoveUp(this, mover));
+            } else if (cellPath.get(i).y > cellPath.get(i - 1).y) {
+                result.add(new MoveDown(this, mover));
             }
         }
 
-        // vertical movement
-        if (fromIndex.first <= toIndex.first) {
-            for (int i = fromIndex.first; i < toIndex.first; i++) {
-                result.add(new MoveDown(this, mover));
-            }
-        } else {
-            for (int i = toIndex.first; i < fromIndex.first; i++) {
-                result.add(new MoveUp(this, mover));
-            }
-        }
         return result;
     }}

@@ -70,6 +70,10 @@ public class Stage extends KeyObservable {
     }
 
     public void update(){
+        sheep.getLocationOf().setPath(new AStarPath(grid, sheep).findPath(sheep.getLocationOf(), shepherd.getLocationOf(), sheep));
+        wolf.getLocationOf().setPath(new AStarPath(grid, wolf).findPath(wolf.getLocationOf(), sheep.getLocationOf(), wolf));
+        shepherd.getLocationOf().setPath(new AStarPath(grid, shepherd).findPath(shepherd.getLocationOf(), sheep.getLocationOf(), shepherd));
+
         if (!player.inMove()) {
             if (sheep.location == shepherd.location) {
                 System.out.println("The sheep is safe :)");
@@ -96,9 +100,8 @@ public class Stage extends KeyObservable {
                         c.setBehaviour(new StandStill());
                     }
                 }
-
-                allCharacters.forEach((c) -> c.aiMove(this).perform());
                 player.startMove();
+                allCharacters.forEach((c) -> c.aiMove(this).perform());
                 timeOfLastMove = Instant.now();
             }
         }
@@ -106,9 +109,9 @@ public class Stage extends KeyObservable {
 
     public void paint(Graphics g, Point mouseLocation) {
         grid.paint(g, mouseLocation);
-        sheep.paint(g);
-        shepherd.paint(g);
-        wolf.paint(g);
+        sheep.paint(g, mouseLocation);
+        shepherd.paint(g, mouseLocation);
+        wolf.paint(g, mouseLocation);
         player.paint(g);
     }
 }

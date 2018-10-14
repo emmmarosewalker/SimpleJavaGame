@@ -1,10 +1,18 @@
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Random;
 
-public class Cell extends Rectangle {
+public class Cell extends Rectangle implements Comparable {
 
     private static Random rand = new Random();
     Color c;
+
+    double cost = 1;
+    double heuristic = 0;
+    Cell parent = null;
+
+    private ArrayList<Cell> myPath;
 
     protected Boolean isBlock;
 
@@ -31,6 +39,14 @@ public class Cell extends Rectangle {
         return isBlock;
     }
 
+    public void setPath(ArrayList<Cell> path) {
+        this.myPath = path;
+    }
+
+    public ArrayList<Cell> getPath() {
+        return myPath;
+    }
+
     @Override
     public boolean contains(Point target){
         if (target == null)
@@ -40,5 +56,21 @@ public class Cell extends Rectangle {
 
     public int getGrassHeight(){
         return c.getGreen()/50;
+    }
+
+    @Override
+    public int compareTo(Object other) {
+        Cell c = (Cell) other;
+
+        double f = heuristic + cost;
+        double of = c.heuristic + c.cost;
+
+        if (f < of) {
+                return -1;
+        } else if (f > of) {
+                return 1;
+        } else {
+                return 0;
+            }
     }
 }

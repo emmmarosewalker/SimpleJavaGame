@@ -1,8 +1,11 @@
 sheep: (0,1)
-wolf: (3,5)
+wolf: (17,5)
 shepherd: (10,2)
 block: (1, 2)
 block: (1, 3)
 block: (1, 4)
 block: (1, 5)
-
+block: (5, 7)
+block: (5, 8)
+block: (5, 9)
+block: (5, 10)

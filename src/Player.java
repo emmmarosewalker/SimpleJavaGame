@@ -9,7 +9,7 @@ public class Player implements KeyObserver {
 
     public Player(Cell location){
         this.location = location;
-        inMove = false;
+        inMove = true;
     }
 
     public void paint(Graphics g){
