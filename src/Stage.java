@@ -70,9 +70,11 @@ public class Stage extends KeyObservable {
     }
 
     public void update(){
-        sheep.getLocationOf().setPath(new AStarPath(grid, sheep).findPath(sheep.getLocationOf(), shepherd.getLocationOf(), sheep));
-        wolf.getLocationOf().setPath(new AStarPath(grid, wolf).findPath(wolf.getLocationOf(), sheep.getLocationOf(), wolf));
-        shepherd.getLocationOf().setPath(new AStarPath(grid, shepherd).findPath(shepherd.getLocationOf(), sheep.getLocationOf(), shepherd));
+        sheep.getLocationOf().setPath(new AStarPath(grid).findPath(sheep.getLocationOf(), shepherd.getLocationOf(), sheep));
+        wolf.getLocationOf().setPath(new AStarPath(grid).findPath(wolf.getLocationOf(), sheep.getLocationOf(), wolf));
+        shepherd.getLocationOf().setPath(new AStarPath(grid).findPath(shepherd.getLocationOf(), sheep.getLocationOf(), shepherd));
+
+        player.getLocationOf().setPath(new AStarPath(grid).findPath(player.getLocationOf(), sheep.getLocationOf(), player));
 
         if (!player.inMove()) {
             if (sheep.location == shepherd.location) {
@@ -100,6 +102,7 @@ public class Stage extends KeyObservable {
                         c.setBehaviour(new StandStill());
                     }
                 }
+
                 player.startMove();
                 allCharacters.forEach((c) -> c.aiMove(this).perform());
                 timeOfLastMove = Instant.now();

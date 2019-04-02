@@ -65,12 +65,11 @@ public class Cell extends Rectangle implements Comparable {
         double f = heuristic + cost;
         double of = c.heuristic + c.cost;
 
-        if (f < of) {
-                return -1;
-        } else if (f > of) {
-                return 1;
-        } else {
-                return 0;
-            }
+        if (f < of)
+            return -1;
+        else if (f > of)
+            return 1;
+        else
+            return 0;
     }
 }

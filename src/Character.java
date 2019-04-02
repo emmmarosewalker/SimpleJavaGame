@@ -12,8 +12,6 @@ public abstract class Character implements GamePiece<Cell> {
     Optional<Color> display;
     Cell location;
     Behaviour behaviour;
-    //private Point lastSeenMousePos;
-    //private long stillMouseTime;
 
     public Character(Cell location, Behaviour behaviour){
         this.location = location;
@@ -22,17 +20,10 @@ public abstract class Character implements GamePiece<Cell> {
     }
 
     public  void paint(Graphics g, Point mousePosition){
-//
-//        if (lastSeenMousePos != null && lastSeenMousePos.equals(mousePosition)) {
-//            stillMouseTime++;
-//        } else {
-//            stillMouseTime = 0;
-//        }
         if(display.isPresent()) {
             g.setColor(display.get());
             g.fillOval(location.x + location.width / 4, location.y + location.height / 4, location.width / 2, location.height / 2);
         }
-
     }
 
     public void setLocationOf(Cell loc){

@@ -55,7 +55,6 @@ public class Grid implements GameBoard<Cell> {
                 if (stillMouseTime > 20){
                     if (c.getPath() != null) {
                         for (Cell p : c.getPath()) {
-                            g.setColor(Color.MAGENTA);
                             p.paint(g, true);
                         }
                     }
@@ -149,40 +148,16 @@ public class Grid implements GameBoard<Cell> {
 
     @Override
     public java.util.List<RelativeMove> movesBetween(Cell from, Cell to, GamePiece<Cell> mover) {
-        Pair<Integer, Integer> fromIndex = findAmongstCells((c) -> c == from);
-        Pair<Integer, Integer> toIndex = findAmongstCells((c) -> c == to);
 
-        List<RelativeMove> result = new ArrayList<RelativeMove>();
+        List<RelativeMove> result = new ArrayList<>();
 
-        // horizontal movement
-//        if (fromIndex.second <= toIndex.second) {
-//            for (int i = fromIndex.second; i < toIndex.second; i++) {
-//                result.add(new MoveRight(this, mover));
-//            }
-//        } else {
-//            for (int i = toIndex.second; i < fromIndex.second; i++) {
-//                result.add(new MoveLeft(this, mover));
-//            }
-//        }
-//
-//        // vertical movement
-//        if (fromIndex.first <= toIndex.first) {
-//            for (int i = fromIndex.first; i < toIndex.first; i++) {
-//                result.add(new MoveDown(this, mover));
-//            }
-//        } else {
-//            for (int i = toIndex.first; i < fromIndex.first; i++) {
-//                result.add(new MoveUp(this, mover));
-//            }
-//        }
-
-        AStarPath aStarPath = new AStarPath(this, mover);
+        AStarPath aStarPath = new AStarPath(this);
         ArrayList<Cell> cellPath = aStarPath.findPath(from, to, mover);
 
         for (int i = 1; i < cellPath.size(); i++) {
-            if (cellPath.get(i).x < cellPath.get(i-1).x) {
+            if (cellPath.get(i).x < cellPath.get(i - 1).x) {
                 result.add(new MoveLeft(this, mover));
-            } else if (cellPath.get(i).x > cellPath.get(i-1).x) {
+            } else if (cellPath.get(i).x > cellPath.get(i - 1).x) {
                 result.add(new MoveRight(this, mover));
             } else if (cellPath.get(i).y < cellPath.get(i - 1).y) {
                 result.add(new MoveUp(this, mover));
@@ -192,4 +167,5 @@ public class Grid implements GameBoard<Cell> {
         }
 
         return result;
-    }}
+    }
+}

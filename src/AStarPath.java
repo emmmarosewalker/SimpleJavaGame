@@ -1,5 +1,4 @@
 import bos.*;
-import java.awt.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,25 +9,21 @@ import java.util.Collections;
 
 public class AStarPath {
 
-    ArrayList<Cell> open = new ArrayList<>();
-    ArrayList<Cell> closed = new ArrayList<>();
-    ArrayList<Cell> cellPath = new ArrayList<>();
+    private ArrayList<Cell> open = new ArrayList<>();
+    private ArrayList<Cell> closed = new ArrayList<>();
+    private ArrayList<Cell> cellPath = new ArrayList<>();
 
     private Grid grid;
-    private GamePiece<Cell> mover;
-    private Cell[][] cells;
 
-    public double getCost(int x, int y, int tx, int ty) {
+    private double getCost(int x, int y, int tx, int ty) {
         double dx = tx - x;
         double dy = ty - y;
 
         return (Math.sqrt((dx*dx)+(dy*dy)));
     }
 
-    public AStarPath(Grid grid, GamePiece<Cell> mover) {
-        this.mover = mover;
+    public AStarPath(Grid grid) {
         this.grid = grid;
-        this.cells = grid.getCells();
     }
 
     public ArrayList<Cell> findPath(Cell from, Cell to, GamePiece<Cell> mover) {
@@ -71,11 +66,11 @@ public class AStarPath {
 
                     if (neighbourX <= 19 && neighbourX >= 0 && neighbourY <= 19 && neighbourY >= 0) {
 
-                        if(!cells[neighbourX][neighbourY].checkIfBlock()) {
+                        if(!grid.getCells()[neighbourX][neighbourY].checkIfBlock()) {
 
                             double nextStepCost = current.cost + 1;
 
-                            Cell neighbour = cells[neighbourX][neighbourY];
+                            Cell neighbour = grid.getCells()[neighbourX][neighbourY];
 
                             if (nextStepCost < neighbour.cost) {
                                 if (open.contains(neighbour)) {
@@ -109,26 +104,13 @@ public class AStarPath {
         }
 
         // find our way back using the parents
-
-        ArrayList<RelativeMove> path = new ArrayList<>();
-
         Cell target = to;
         while (target != from) {
-
-            // x and y indices for the 'from' cell
-            Pair<Integer, Integer> parentIndices = grid.indexOfCell(target.parent);
-            // x and y indices for the destination cell
-            Pair<Integer, Integer> childIndices = grid.indexOfCell(target);
-
             cellPath.add(0, target);
-
             target = target.parent;
-
         }
 
         cellPath.add(0, from);
-
-        path.add(0, new NoMove(grid, mover));
 
         return cellPath;
     }

@@ -1,8 +1,9 @@
 import bos.GameBoard;
+import bos.GamePiece;
 
 import java.awt.*;
 
-public class Player implements KeyObserver {
+public class Player implements KeyObserver, GamePiece<Cell> {
 
     public Cell location;
     private Boolean inMove;
